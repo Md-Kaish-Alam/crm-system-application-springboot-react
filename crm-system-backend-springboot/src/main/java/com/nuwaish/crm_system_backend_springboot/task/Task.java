@@ -1,4 +1,4 @@
-package com.nuwaish.crm_system_backend_springboot.Task;
+package com.nuwaish.crm_system_backend_springboot.task;
 
 import org.springframework.data.annotation.Id;
 import org.springframework.data.mongodb.core.mapping.Document;

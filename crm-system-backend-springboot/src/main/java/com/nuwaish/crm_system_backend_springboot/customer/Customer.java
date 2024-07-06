@@ -1,7 +1,7 @@
 package com.nuwaish.crm_system_backend_springboot.customer;
 
 
-import com.nuwaish.crm_system_backend_springboot.Task.Task;
+import com.nuwaish.crm_system_backend_springboot.task.Task;
 import com.nuwaish.crm_system_backend_springboot.emailLog.EmailLog;
 import com.nuwaish.crm_system_backend_springboot.salesPipeline.SalesPipeline;
 import org.springframework.data.annotation.Id;
