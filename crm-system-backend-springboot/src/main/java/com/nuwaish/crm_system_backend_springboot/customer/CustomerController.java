@@ -1,7 +1,5 @@
-package com.nuwaish.crm_system_backend_springboot;
+package com.nuwaish.crm_system_backend_springboot.customer;
 
-import com.nuwaish.crm_system_backend_springboot.customer.Customer;
-import com.nuwaish.crm_system_backend_springboot.customer.CustomerService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
