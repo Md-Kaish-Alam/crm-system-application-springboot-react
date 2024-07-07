@@ -8,6 +8,7 @@ public class SalesPipeline {
 
     @Id
     private String id;
+    private String customerId;
     private String stage;
     private String description;
 
@@ -17,6 +18,14 @@ public class SalesPipeline {
 
     public void setId(String id) {
         this.id = id;
+    }
+
+    public String getCustomerId() {
+        return customerId;
+    }
+
+    public void setCustomerId(String customerId) {
+        this.customerId = customerId;
     }
 
     public String getStage() {

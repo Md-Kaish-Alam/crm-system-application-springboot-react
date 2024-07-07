@@ -1,5 +1,8 @@
 package com.nuwaish.crm_system_backend_springboot.customer;
 
+import com.nuwaish.crm_system_backend_springboot.emailLog.EmailLog;
+import com.nuwaish.crm_system_backend_springboot.salesPipeline.SalesPipeline;
+import com.nuwaish.crm_system_backend_springboot.task.Task;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -42,5 +45,23 @@ public class CustomerController {
     public ResponseEntity<Void> deleteCustomer(@PathVariable String id) {
         customerService.deleteCustomer(id);
         return ResponseEntity.noContent().build();
+    }
+
+    @PostMapping("/{customerId}/sales-pipelines")
+    public ResponseEntity<Customer> addSalesPipeline(@PathVariable String customerId, @RequestBody SalesPipeline pipeline) {
+        Customer customer = customerService.addSalesPipeline(customerId, pipeline);
+        return customer != null ? ResponseEntity.ok(customer) : ResponseEntity.notFound().build();
+    }
+
+    @PostMapping("/{customerId}/email-logs")
+    public ResponseEntity<Customer> addEmailLog(@PathVariable String customerId, @RequestBody EmailLog emailLog) {
+        Customer customer = customerService.addEmailLog(customerId, emailLog);
+        return customer != null ? ResponseEntity.ok(customer) : ResponseEntity.notFound().build();
+    }
+
+    @PostMapping("/{customerId}/tasks")
+    public ResponseEntity<Customer> addTask(@PathVariable String customerId, @RequestBody Task task) {
+        Customer customer = customerService.addTask(customerId, task);
+        return customer != null ? ResponseEntity.ok(customer) : ResponseEntity.notFound().build();
     }
 }

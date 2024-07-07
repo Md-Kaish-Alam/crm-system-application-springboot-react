@@ -10,6 +10,7 @@ public class Task {
 
     @Id
     private String id;
+    private String customerId;
     private String title;
     private String description;
     private Date dueDate;
@@ -21,6 +22,14 @@ public class Task {
 
     public void setId(String id) {
         this.id = id;
+    }
+
+    public String getCustomerId() {
+        return customerId;
+    }
+
+    public void setCustomerId(String customerId) {
+        this.customerId = customerId;
     }
 
     public String getTitle() {
