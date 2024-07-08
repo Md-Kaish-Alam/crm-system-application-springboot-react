@@ -1,12 +1,9 @@
 package com.nuwaish.crm_system_backend_springboot.emailLog;
 
-
-import com.nuwaish.crm_system_backend_springboot.customer.Customer;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
-import javax.swing.plaf.IconUIResource;
 import java.util.List;
 import java.util.Optional;
 
@@ -35,10 +32,10 @@ public class EmailLogController {
         return ResponseEntity.ok(emailLogs);
     }
 
-    @PostMapping("/{customerId}/email-logs")
-    public ResponseEntity<Customer> addEmailLog(@PathVariable String customerId, @RequestBody EmailLog emailLog) {
-        Customer customer = emailLogService.addEmailLog(customerId, emailLog);
-        return customer != null ? ResponseEntity.ok(customer) : ResponseEntity.notFound().build();
+    @PostMapping("/customer/{customerId}")
+    public ResponseEntity<EmailLog> addEmailLog(@PathVariable String customerId, @RequestBody EmailLog emailLog) {
+        EmailLog savedEmailLog = emailLogService.addEmailLog(customerId, emailLog);
+        return ResponseEntity.ok(savedEmailLog);
     }
 
     @DeleteMapping("/{id}")

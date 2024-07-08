@@ -11,6 +11,7 @@ import org.springframework.data.annotation.Id;
 import org.springframework.data.mongodb.core.mapping.DBRef;
 import org.springframework.data.mongodb.core.mapping.Document;
 
+import java.util.ArrayList;
 import java.util.List;
 
 @Document(collection = "customers")
@@ -27,13 +28,13 @@ public class Customer {
     private String address;
 
     @DBRef
-    private List<SalesPipeline> salesPipelines;
+    private List<SalesPipeline> salesPipelines = new ArrayList<>();
 
     @DBRef
-    private List<EmailLog> emailLogs;
+    private List<EmailLog> emailLogs = new ArrayList<>();
 
     @DBRef
-    private List<Task> tasks;
+    private List<Task> tasks = new ArrayList<>();
 
     public String getId() {
         return id;
