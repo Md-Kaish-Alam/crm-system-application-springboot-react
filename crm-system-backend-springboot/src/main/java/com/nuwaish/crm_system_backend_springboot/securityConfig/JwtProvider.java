@@ -3,6 +3,7 @@ package com.nuwaish.crm_system_backend_springboot.securityConfig;
 import io.jsonwebtoken.Claims;
 import io.jsonwebtoken.Jwts;
 import io.jsonwebtoken.security.Keys;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.core.Authentication;
 import org.springframework.security.core.GrantedAuthority;
 
@@ -12,9 +13,14 @@ import java.util.Date;
 import java.util.HashSet;
 import java.util.Set;
 
+import static com.nuwaish.crm_system_backend_springboot.securityConfig.JwtConstant.SECRET_KEY;
+
 public class JwtProvider {
 
-    static SecretKey key = Keys.hmacShaKeyFor(JwtConstant.SECRET_KEY.getBytes());
+    @Autowired
+    private static TokenBlacklistService tokenBlacklistService;
+
+    static SecretKey key = Keys.hmacShaKeyFor(SECRET_KEY.getBytes());
 
     public static String generateToken(Authentication auth) {
         Collection<? extends GrantedAuthority> authorities = auth.getAuthorities();
@@ -30,6 +36,19 @@ public class JwtProvider {
                 .compact();
 
         return jwt;
+    }
+
+    public static boolean validateToken(String token) {
+        if (tokenBlacklistService.isTokenBlacklisted(token)) {
+            return false;
+        }
+
+        try {
+            Jwts.parser().setSigningKey(SECRET_KEY).parseClaimsJws(token);
+            return true;
+        } catch (Exception e) {
+            return false;
+        }
     }
 
     private static String populateAuthorities(Collection<? extends GrantedAuthority> authorities) {
@@ -57,6 +76,10 @@ public class JwtProvider {
             e.printStackTrace();
             return null;
         }
+    }
+
+    public static Claims getClaims(String token) {
+        return Jwts.parser().setSigningKey(SECRET_KEY).parseClaimsJws(token).getBody();
     }
 
 }

@@ -2,6 +2,7 @@ package com.nuwaish.crm_system_backend_springboot.user;
 
 import com.nuwaish.crm_system_backend_springboot.response.AuthResponse;
 import com.nuwaish.crm_system_backend_springboot.securityConfig.JwtProvider;
+import com.nuwaish.crm_system_backend_springboot.securityConfig.TokenBlacklistService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -12,10 +13,7 @@ import org.springframework.security.core.context.SecurityContextHolder;
 
 import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.security.crypto.password.PasswordEncoder;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestBody;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
 
 @RestController
 @RequestMapping("/auth")
@@ -32,6 +30,9 @@ public class UserController {
 
     @Autowired(required = true)
     private UserService userService;
+
+    @Autowired
+    private TokenBlacklistService tokenBlacklistService;
 
     @PostMapping("/signup")
     public ResponseEntity<AuthResponse> createUserHandler(@RequestBody User user) {
@@ -70,10 +71,9 @@ public class UserController {
 
     @PostMapping("signin")
     public ResponseEntity<AuthResponse> signin(@RequestBody User loginRequest) {
+
         String username = loginRequest.getEmail();
         String password = loginRequest.getPassword();
-
-//        System.out.println(username + "--" + password);
 
         Authentication authentication = authenticate(username, password);
         SecurityContextHolder.getContext().setAuthentication(authentication);
@@ -88,21 +88,28 @@ public class UserController {
         return new ResponseEntity<>(authResponse, HttpStatus.OK);
     }
 
+    @PostMapping("/logout")
+    public ResponseEntity<AuthResponse> logout(@RequestHeader("Authorization") String token) {
+        String jwtToken = token.substring(7); // Remove "Bearer " prefix
+        tokenBlacklistService.blacklistToken(jwtToken);
+
+        AuthResponse authResponse = new AuthResponse();
+        authResponse.setMessage("Logout Success");
+        authResponse.setStatus(true);
+
+        return new ResponseEntity<>(authResponse, HttpStatus.OK);
+    }
+
     private Authentication authenticate(String username, String password) {
-//        System.out.println(username + "--" + password);
 
         UserDetails userDetails = customUserDetails.loadUserByUsername(username);
 
-//        System.out.println("singin in user details" + userDetails);
-
         if (userDetails == null) {
-//            System.out.println("Sign in details - null" + userDetails);
 
             throw new BadCredentialsException("Invalid username and password");
         }
 
         if (!passwordEncoder.matches(password, userDetails.getPassword())) {
-//            System.out.println("Sign in userdetails - password mismatch" + userDetails);
 
             throw new BadCredentialsException("Invalid Password");
         }
