@@ -1,8 +1,5 @@
 package com.nuwaish.crm_system_backend_springboot.customer;
 
-import com.nuwaish.crm_system_backend_springboot.emailLog.EmailLog;
-import com.nuwaish.crm_system_backend_springboot.salesPipeline.SalesPipeline;
-import com.nuwaish.crm_system_backend_springboot.task.Task;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;

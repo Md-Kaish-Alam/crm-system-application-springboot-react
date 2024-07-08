@@ -26,7 +26,6 @@ public class CustomerService {
     public Customer updateCustomer(String id, Customer updatedCustomer) {
         Customer existingCustomer = customerRepository.findById(id).orElse(null);
         if (existingCustomer != null) {
-            // Update fields
             existingCustomer.setName(updatedCustomer.getName());
             existingCustomer.setMobile(updatedCustomer.getMobile());
             existingCustomer.setAddress(updatedCustomer.getAddress());

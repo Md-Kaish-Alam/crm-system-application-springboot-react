@@ -1,8 +1,6 @@
 package com.nuwaish.crm_system_backend_springboot.response;
 
-import lombok.AllArgsConstructor;
 import lombok.Data;
-import lombok.NoArgsConstructor;
 
 @Data
 public class ApiResponse {

@@ -2,8 +2,6 @@ package com.nuwaish.crm_system_backend_springboot.emailLog;
 
 import com.nuwaish.crm_system_backend_springboot.customer.Customer;
 import com.nuwaish.crm_system_backend_springboot.customer.CustomerRepository;
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
@@ -12,8 +10,6 @@ import java.util.Optional;
 
 @Service
 public class EmailLogService {
-
-    private static final Logger logger = LoggerFactory.getLogger(EmailLogService.class);
 
     @Autowired
     private EmailLogRepository emailLogRepository;

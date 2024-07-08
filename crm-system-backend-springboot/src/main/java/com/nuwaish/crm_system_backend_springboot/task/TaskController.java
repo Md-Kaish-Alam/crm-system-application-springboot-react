@@ -1,6 +1,5 @@
 package com.nuwaish.crm_system_backend_springboot.task;
 
-import com.nuwaish.crm_system_backend_springboot.customer.Customer;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
@@ -33,13 +32,13 @@ public class TaskController {
         return ResponseEntity.ok(tasks);
     }
 
-    @PostMapping("/{customerId}/tasks")
-    public ResponseEntity<Customer> addTask(@PathVariable String customerId, @RequestBody Task task) {
-        Customer customer = taskService.addTask(customerId, task);
-        return customer != null ? ResponseEntity.ok(customer) : ResponseEntity.notFound().build();
+    @PostMapping("/customer/{customerId}")
+    public ResponseEntity<Task> addTask(@PathVariable String customerId, @RequestBody Task task) {
+        Task savedTask = taskService.addTask(customerId, task);
+        return ResponseEntity.ok(savedTask);
     }
 
-    @PutMapping("{id}")
+    @PutMapping("/{id}")
     public ResponseEntity<Task> updateTask(@PathVariable String id, @RequestBody Task updateTask) {
         Task task = taskService.updateTaskById(id, updateTask);
 

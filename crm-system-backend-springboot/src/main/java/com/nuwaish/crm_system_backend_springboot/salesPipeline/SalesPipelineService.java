@@ -29,12 +29,27 @@ public class SalesPipelineService {
         return salesPipelineRepository.findByCustomerId(customerId);
     }
 
-    public Customer addSalesPipeline(String customerId, SalesPipeline pipeline) {
+    public SalesPipeline addSalesPipeline(String customerId, SalesPipeline salesPipeline) {
+        salesPipeline.setCustomerId(customerId);
+        SalesPipeline savedSalesPipeline = salesPipelineRepository.save(salesPipeline);
         Customer customer = customerRepository.findById(customerId).orElse(null);
         if (customer != null) {
-            customer.getSalesPipelines().add(pipeline);
-            return customerRepository.save(customer);
+            customer.getSalesPipelines().add(savedSalesPipeline);
+            customerRepository.save(customer);
         }
+        return savedSalesPipeline;
+    }
+
+    public SalesPipeline updateSalesPipeline(String id, SalesPipeline updatedSalesPipeline) {
+        Optional<SalesPipeline> existingPipelineOptional = salesPipelineRepository.findById(id);
+        if (existingPipelineOptional.isPresent()) {
+            SalesPipeline existingPipeline = existingPipelineOptional.get();
+            existingPipeline.setStage(updatedSalesPipeline.getStage());
+            existingPipeline.setDescription(updatedSalesPipeline.getDescription());
+
+            return salesPipelineRepository.save(existingPipeline);
+        }
+
         return null;
     }
 

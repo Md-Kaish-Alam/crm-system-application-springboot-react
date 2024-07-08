@@ -38,13 +38,17 @@ public class TaskService {
         taskRepository.deleteAll(tasks);
     }
 
-    public Customer addTask(String customerId, Task task) {
+    public Task addTask(String customerId, Task task) {
+        task.setCustomerId(customerId);
+        Task savedTask = taskRepository.save(task);
+
         Customer customer = customerRepository.findById(customerId).orElse(null);
         if (customer != null) {
-            customer.getTasks().add(task);
-            return customerRepository.save(customer);
+            customer.getTasks().add(savedTask);
+            customerRepository.save(customer);
         }
-        return null;
+
+        return savedTask;
     }
 
     public Task updateTaskById(String id, Task updatedTask) {
