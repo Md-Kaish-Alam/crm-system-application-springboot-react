@@ -23,8 +23,10 @@ public class ApplicationConfig {
     SecurityFilterChain filterChain(HttpSecurity httpSecurity) throws Exception {
         httpSecurity.sessionManagement(management -> management.sessionCreationPolicy(SessionCreationPolicy.STATELESS))
                 .authorizeHttpRequests(
-                        authorize -> authorize.requestMatchers("/api/**")
-                                .authenticated().anyRequest().permitAll())
+                        authorize -> authorize
+                                .requestMatchers("/api/customers/**").permitAll() // Allow access to this endpoint
+                                .requestMatchers("/api/**").authenticated()
+                                .anyRequest().permitAll())
                 .addFilterBefore(new JwtTokenValidator(), BasicAuthenticationFilter.class)
                 .csrf(csrf -> csrf.disable())
                 .cors(cors -> cors.configurationSource(corsConfigurationSource()));
