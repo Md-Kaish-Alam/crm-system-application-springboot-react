@@ -1,6 +1,7 @@
 package com.nuwaish.crm_system_backend_springboot.salesPipeline;
 
 
+import com.nuwaish.crm_system_backend_springboot.customer.Customer;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
@@ -31,6 +32,12 @@ public class SalesPipelineController {
     public ResponseEntity<List<SalesPipeline>> getSalesPipelinesByCustomerId(@PathVariable String customerId) {
         List<SalesPipeline> salesPipelines = salesPipelineService.getSalesPipelinesByCustomerId(customerId);
         return  ResponseEntity.ok(salesPipelines);
+    }
+
+    @PostMapping("/{customerId}/sales-pipelines")
+    public ResponseEntity<Customer> addSalesPipeline(@PathVariable String customerId, @RequestBody SalesPipeline pipeline) {
+        Customer customer = salesPipelineService.addSalesPipeline(customerId, pipeline);
+        return customer != null ? ResponseEntity.ok(customer) : ResponseEntity.notFound().build();
     }
 
     @DeleteMapping("/{id}")

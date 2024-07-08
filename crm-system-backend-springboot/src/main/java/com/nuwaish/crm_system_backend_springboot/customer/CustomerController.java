@@ -47,21 +47,4 @@ public class CustomerController {
         return ResponseEntity.noContent().build();
     }
 
-    @PostMapping("/{customerId}/sales-pipelines")
-    public ResponseEntity<Customer> addSalesPipeline(@PathVariable String customerId, @RequestBody SalesPipeline pipeline) {
-        Customer customer = customerService.addSalesPipeline(customerId, pipeline);
-        return customer != null ? ResponseEntity.ok(customer) : ResponseEntity.notFound().build();
-    }
-
-    @PostMapping("/{customerId}/email-logs")
-    public ResponseEntity<Customer> addEmailLog(@PathVariable String customerId, @RequestBody EmailLog emailLog) {
-        Customer customer = customerService.addEmailLog(customerId, emailLog);
-        return customer != null ? ResponseEntity.ok(customer) : ResponseEntity.notFound().build();
-    }
-
-    @PostMapping("/{customerId}/tasks")
-    public ResponseEntity<Customer> addTask(@PathVariable String customerId, @RequestBody Task task) {
-        Customer customer = customerService.addTask(customerId, task);
-        return customer != null ? ResponseEntity.ok(customer) : ResponseEntity.notFound().build();
-    }
 }

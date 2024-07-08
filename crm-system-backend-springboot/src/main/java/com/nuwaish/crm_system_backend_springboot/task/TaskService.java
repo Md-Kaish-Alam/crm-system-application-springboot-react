@@ -1,5 +1,7 @@
 package com.nuwaish.crm_system_backend_springboot.task;
 
+import com.nuwaish.crm_system_backend_springboot.customer.Customer;
+import com.nuwaish.crm_system_backend_springboot.customer.CustomerRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
@@ -11,6 +13,9 @@ public class TaskService {
 
     @Autowired
     private TaskRepository taskRepository;
+
+    @Autowired
+    private CustomerRepository customerRepository;
 
     public List<Task> getAllTasks() {
         return taskRepository.findAll();
@@ -31,6 +36,15 @@ public class TaskService {
     public void deleteTasksByCustomerId(String customerId) {
         List<Task> tasks = taskRepository.findByCustomerId(customerId);
         taskRepository.deleteAll(tasks);
+    }
+
+    public Customer addTask(String customerId, Task task) {
+        Customer customer = customerRepository.findById(customerId).orElse(null);
+        if (customer != null) {
+            customer.getTasks().add(task);
+            return customerRepository.save(customer);
+        }
+        return null;
     }
 
     public Task updateTaskById(String id, Task updatedTask) {
