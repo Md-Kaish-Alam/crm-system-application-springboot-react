@@ -29,6 +29,8 @@ public class JwtTokenValidator extends OncePerRequestFilter {
         if (jwt != null && jwt.startsWith("Bearer ")) {
             jwt = jwt.substring(7);
 
+            System.out.println("Extracted JWT: " + jwt);
+
             try {
                 SecretKey key = Keys.hmacShaKeyFor(JwtConstant.SECRET_KEY.getBytes());
 

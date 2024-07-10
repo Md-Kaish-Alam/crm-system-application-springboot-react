@@ -9,6 +9,7 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.security.authentication.BadCredentialsException;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
 import org.springframework.security.core.Authentication;
+import org.springframework.security.core.annotation.AuthenticationPrincipal;
 import org.springframework.security.core.context.SecurityContextHolder;
 
 import org.springframework.security.core.userdetails.UserDetails;
@@ -101,6 +102,24 @@ public class UserController {
         authResponse.setStatus(true);
 
         return new ResponseEntity<>(authResponse, HttpStatus.OK);
+    }
+
+    @GetMapping("/user/details")
+    private ResponseEntity<User> getUserDetails(@AuthenticationPrincipal UserDetails userDetails) {
+
+        if (userDetails == null) {
+            return new ResponseEntity<>(HttpStatus.UNAUTHORIZED);
+        }
+
+        String email = userDetails.getUsername();
+        User user = userRepository.findByEmail(email);
+
+        if (user == null) {
+            return new ResponseEntity<>(HttpStatus.NOT_FOUND);
+        }
+
+        user.setPassword(null);
+        return new ResponseEntity<>(user, HttpStatus.OK);
     }
 
     private Authentication authenticate(String username, String password) {

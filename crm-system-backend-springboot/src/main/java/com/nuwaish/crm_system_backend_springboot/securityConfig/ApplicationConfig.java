@@ -25,11 +25,11 @@ public class ApplicationConfig {
                 .authorizeHttpRequests(
                         authorize -> authorize
                                 .requestMatchers("/api/customers/**").permitAll() // Allow access to this endpoint
-                                .requestMatchers("/api/**").authenticated()
-                                .anyRequest().permitAll())
-                .addFilterBefore(new JwtTokenValidator(), BasicAuthenticationFilter.class)
-                .csrf(csrf -> csrf.disable())
-                .cors(cors -> cors.configurationSource(corsConfigurationSource()));
+                                .requestMatchers("/api/**").authenticated() // Secure other API endpoints
+                                .anyRequest().permitAll()) // Permit all other requests
+                .addFilterBefore(new JwtTokenValidator(), BasicAuthenticationFilter.class) // JWT token validation
+                .csrf(csrf -> csrf.disable()) // Disable CSRF protection
+                .cors(cors -> cors.configurationSource(corsConfigurationSource())); // Configure CORS policy
 
         return httpSecurity.build();
     }
