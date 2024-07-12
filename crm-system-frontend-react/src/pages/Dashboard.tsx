@@ -1,9 +1,10 @@
-import axiosInstance from "@/axiosInstance";
-import { useEffect, useState } from "react";
 import { useDispatch } from "react-redux";
-// import { RootState } from "@/redux/store";
+import { useEffect, useState } from "react";
+
 import { User } from "@/types/types";
+import axiosInstance from "@/axiosInstance";
 import { clearAuthState } from "@/features/auth/authSlice";
+
 import Logout from "./Logout";
 
 const Dashboard = () => {
@@ -12,8 +13,7 @@ const Dashboard = () => {
   const dispatch = useDispatch();
 
   useEffect(() => {
-    const token = localStorage.getItem('token');
-    console.log({ token });
+    const token = localStorage.getItem("token");
     const fetchUserDetails = async () => {
       try {
         const response = await axiosInstance.get<User>("auth/user/details", {
