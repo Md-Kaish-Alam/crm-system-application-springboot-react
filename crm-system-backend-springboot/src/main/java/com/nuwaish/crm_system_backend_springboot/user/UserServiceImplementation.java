@@ -3,13 +3,13 @@ package com.nuwaish.crm_system_backend_springboot.user;
 import com.nuwaish.crm_system_backend_springboot.securityConfig.JwtProvider;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.core.GrantedAuthority;
+import org.springframework.security.core.authority.SimpleGrantedAuthority;
 import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.security.core.userdetails.UserDetailsService;
 import org.springframework.security.core.userdetails.UsernameNotFoundException;
 import org.springframework.stereotype.Service;
 
-import java.util.ArrayList;
-import java.util.List;
+import java.util.*;
 
 @Service
 public class UserServiceImplementation implements UserService, UserDetailsService{
@@ -23,20 +23,17 @@ public class UserServiceImplementation implements UserService, UserDetailsServic
     @Override
     public UserDetails loadUserByUsername(String username) throws UsernameNotFoundException {
         User user = userRepository.findByEmail(username);
-//        System.out.println(user);
 
         if (user==null) {
             throw new UsernameNotFoundException("User not found with this email" + username);
         }
 
-//        System.out.println("Loaded user: " + user.getEmail() + ", Role: " + user.getRole());
-        List<GrantedAuthority> authorities = new ArrayList<>();
+        System.out.println("Loaded user: " + user.getEmail() + ", Role: " + user.getRole());
+
+        Collection<? extends GrantedAuthority> authorities = Collections.singletonList(new SimpleGrantedAuthority(user.getRole()));
 
         return new org.springframework.security.core.userdetails.User(
-                user.getEmail(),
-                user.getPassword(),
-                authorities
-        );
+                user.getEmail(), user.getPassword(), authorities);
     }
 
     @Override

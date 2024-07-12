@@ -1,23 +1,22 @@
 import axiosInstance from "@/axiosInstance";
 import { useEffect, useState } from "react";
-import { useSelector, useDispatch } from "react-redux";
-import { RootState } from "@/redux/store";
+import { useDispatch } from "react-redux";
+// import { RootState } from "@/redux/store";
 import { User } from "@/types/types";
 import { clearAuthState } from "@/features/auth/authSlice";
+import Logout from "./Logout";
 
 const Dashboard = () => {
   const [user, setUser] = useState<User | null>(null);
   const [loading, setLoading] = useState(true);
-
-  const token = useSelector((state: RootState) => state.auth.token);
   const dispatch = useDispatch();
 
-  console.log({ token });
-
   useEffect(() => {
+    const token = localStorage.getItem('token');
+    console.log({ token });
     const fetchUserDetails = async () => {
       try {
-        const response = await axiosInstance.get<User>("/user/details", {
+        const response = await axiosInstance.get<User>("auth/user/details", {
           headers: {
             Authorization: `Bearer ${token}`,
           },
@@ -36,7 +35,7 @@ const Dashboard = () => {
     } else {
       setLoading(false);
     }
-  }, [token, dispatch]);
+  }, [dispatch]);
 
   if (loading) {
     return <p>Loading user details...</p>;
@@ -56,15 +55,7 @@ const Dashboard = () => {
           ) : (
             <p>Error fetching user details. Please try again later.</p>
           )}
-          <button
-            onClick={() => {
-              localStorage.removeItem("token");
-              dispatch(clearAuthState());
-            }}
-            className="bg-blue-500 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded focus:outline-none focus:shadow-outline"
-          >
-            Logout
-          </button>
+          <Logout />
         </div>
       </div>
     </div>

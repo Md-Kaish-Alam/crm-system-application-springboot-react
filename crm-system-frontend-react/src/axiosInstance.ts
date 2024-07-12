@@ -1,6 +1,6 @@
 import axios from 'axios';
 
-import { store } from '@/redux/store';
+// import { store } from '@/redux/store';
 
 const axiosInstance = axios.create({
     baseURL: 'http://localhost:8080/',  // Adjust base URL as per your backend
@@ -8,7 +8,7 @@ const axiosInstance = axios.create({
 
 axiosInstance.interceptors.request.use(
     (config) => {
-        const token = store.getState().auth.token; // Assuming you retrieve token from Redux state
+        const token = localStorage.getItem("token"); // Assuming you retrieve token from Redux state
         if (token) {
             config.headers.Authorization = `Bearer ${token}`;
         }

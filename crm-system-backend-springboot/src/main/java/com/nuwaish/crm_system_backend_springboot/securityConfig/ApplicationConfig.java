@@ -18,7 +18,6 @@ import java.util.Collections;
 @Configuration
 public class ApplicationConfig {
 
-    @SuppressWarnings("deprecation")
     @Bean
     SecurityFilterChain filterChain(HttpSecurity httpSecurity) throws Exception {
         httpSecurity.sessionManagement(management -> management.sessionCreationPolicy(SessionCreationPolicy.STATELESS))
@@ -35,19 +34,16 @@ public class ApplicationConfig {
     }
 
     private CorsConfigurationSource corsConfigurationSource() {
-        return new CorsConfigurationSource() {
-            @Override
-            public CorsConfiguration getCorsConfiguration(HttpServletRequest request) {
-                CorsConfiguration ccfg = new CorsConfiguration();
-                ccfg.setAllowedOrigins(Arrays.asList("http://localhost:5173"));
-                ccfg.setAllowedMethods(Collections.singletonList("*"));
-                ccfg.setAllowCredentials(true);
-                ccfg.setAllowedHeaders(Collections.singletonList("*"));
-                ccfg.setExposedHeaders(Arrays.asList("Authorization"));
-                ccfg.setMaxAge(3600L);
+        return request -> {
+            CorsConfiguration ccfg = new CorsConfiguration();
+            ccfg.setAllowedOrigins(Arrays.asList("http://localhost:5173"));
+            ccfg.setAllowedMethods(Collections.singletonList("*"));
+            ccfg.setAllowCredentials(true);
+            ccfg.setAllowedHeaders(Collections.singletonList("*"));
+            ccfg.setExposedHeaders(Arrays.asList("Authorization"));
+            ccfg.setMaxAge(3600L);
 
-                return ccfg;
-            }
+            return ccfg;
         };
     }
 

@@ -39,6 +39,7 @@ export const signin = createAsyncThunk(
     async (user: User, { rejectWithValue }) => {
         try {
             const response = await axiosInstance.post<AuthResponse>("/auth/signin", user);
+            localStorage.setItem('token', response.data.jwt);
             return response.data;
         } catch (error) {
             if (axios.isAxiosError(error) && error.response) {
@@ -52,11 +53,13 @@ export const signin = createAsyncThunk(
 
 export const logout = createAsyncThunk(
     'auth/logout',
-    async (token: string, { rejectWithValue }) => {
+    async (_, { rejectWithValue }) => {
         try {
+            const token = localStorage.getItem('token');
             const response = await axiosInstance.post<AuthResponse>('/auth/logout', null, {
                 headers: { Authorization: `Bearer ${token}` },
             });
+            localStorage.removeItem('token');
             return response.data;
         } catch (error) {
             if (axios.isAxiosError(error) && error.response) {
@@ -90,7 +93,6 @@ const authSlice = createSlice({
             state.loading = false;
             state.error = null;
         },
-
     },
     extraReducers: (builder) => {
         builder
